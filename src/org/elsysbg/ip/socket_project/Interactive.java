@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-public class Interactive {
+public class Interactive implements Runnable {
 
 	private final Socket socket;
 	private final Server server;
@@ -16,15 +16,16 @@ public class Interactive {
 	private PrintStream out;
 	
 	private Map<String, String> userMeta = new HashMap<>();
-	private Parse parser = new Parse();
-	private Reference r = new Reference();
+	private Parse parser = new Parse(this);
+	private Reference r = new Reference(this);
 	
 	public Interactive(Server server, Socket socket) {
 		this.socket = socket;
 		this.server = server;
 	}
 	
-	public void start() {
+	@Override
+	public void run() {
 		try {
 			out = new PrintStream(socket.getOutputStream());
 			scanner = new Scanner(socket.getInputStream());
@@ -55,8 +56,8 @@ public class Interactive {
 		socket.close();
 	}
 	
-	public void outputMsg(String msg) {
-		out.println(msg);
+	public void msgOut(String msg) {
+		out.print(msg);
 	}
 	
 }

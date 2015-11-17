@@ -6,20 +6,21 @@ import java.util.Map.Entry;
 
 public class Register {
 
+	private Interactive interactive;
 	private static Map<String, User> users = new HashMap<>();
 	
-	public Register() {
-		// TODO Auto-generated constructor stub
+	public Register(Interactive interactive) {
+		this.interactive = interactive;
 	}
 	
 	public void request_login(String username) {
 		if (users.get(username) == null)
-			users.put(username, new User(username));
+			users.put(username, new User(username, interactive));
 			
 		if (users.get(username).isLogged() != 1)
 			users.get(username).login();
 		
-		System.out.println("ok");
+		interactive.msgOut("ok\n");
 	}
 	
 	public void request_logout(String username) {
@@ -32,11 +33,11 @@ public class Register {
 		try {
 			users.get(username).logout();
 		} catch (Exception e) {
-			System.out.println("No such username.");
+			interactive.msgOut("No such username.\n");
 			return;
 		}
 		
-		System.out.println("ok");
+		interactive.msgOut("ok\n");
 	}
 	
 	public Integer get_attendances(String username_checker, String username_checked) {
@@ -46,7 +47,7 @@ public class Register {
 		try {
 			return users.get(username_checked).returnEntriesCount();
 		} catch (Exception e) {
-			System.out.println("The checked username is not avilable");
+			interactive.msgOut("The checked username is not avilable\n");
 		}
 		return -1;
 
@@ -60,13 +61,13 @@ public class Register {
 		if (users.get(username).isLogged() == 0) 
 			return;
 		
-		System.out.print("ok");
+		interactive.msgOut("ok\n");
 		
 		for (Entry<String, User> entry : users.entrySet()) {
 			String key = entry.getKey();
 			User value = entry.getValue();
 			if (value.isLogged() == 0) {
-				System.out.print(":" + key);
+				interactive.msgOut(":" + key);
 			}
 		}
 		
@@ -74,13 +75,13 @@ public class Register {
 
 	public void get_info(String username, String username_checked) {
 		if (users.get(username).isLogged() == 0) {
-			System.out.println("error:notlogged");
+			interactive.msgOut("error:notlogged\n");
 			return;
 		}
-		System.out.print("ok:" + username_checked + ":" + 
+		interactive.msgOut("ok:" + username_checked + ":" + 
 				username + ":" + users.get(username_checked).returnEntriesCount());
 		users.get(username_checked).getAllIntervals();
-		System.out.println();
+		interactive.msgOut("\n");
 		
 	}
 	

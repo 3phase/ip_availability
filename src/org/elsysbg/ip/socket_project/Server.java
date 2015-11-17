@@ -37,7 +37,7 @@ public class Server {
 			
 			final Interactive client = new Interactive(this, socket);
 			clients.add(client);
-			client.start();
+			client.run();
 		}
 		
 	}

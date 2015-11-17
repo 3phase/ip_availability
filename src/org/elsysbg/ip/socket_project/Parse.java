@@ -7,9 +7,10 @@ public class Parse {
 
 	private String stringToParse;
 	private Map<String, String> userMeta = new HashMap<>();
+	Interactive interactive;
 	
-	public Parse() {
-		// TODO Auto-generated constructor stub
+	public Parse(Interactive interactive) {
+		this.interactive = interactive;
 	}
 	
 	public Map<String, String> parse(String s) throws Exception {
@@ -25,7 +26,7 @@ public class Parse {
 			userMeta.put("command", parts[0]);
 			userMeta.put("username", parts[1]);
 		} catch (Exception e) {
-			System.out.println("The format of the arguments is invalid");
+			interactive.msgOut("The format of the arguments is invalid");
 			return;
 		}
 		if (parts.length > 2 && parts[2] != null)
